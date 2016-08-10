@@ -31,18 +31,27 @@ public class NCReceiver extends BroadcastReceiver {
     {
         
         SharedPreferences sharedPref= arg0.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
-        String msg = sharedPref.getString("msg", "");
+        int    id       = sharedPref.getInt("id", 1);
+        String msg      = sharedPref.getString("msg", "");
+        String subtext  = sharedPref.getString("subtext", "");
+        String ticker   = sharedPref.getString("ticker", "");
+        String title    = sharedPref.getString("title", "");
 
-        createNotification(arg0, msg);
+        createNotification(arg0, id, msg, subtext, ticker, title);
     }
 
-    public void createNotification(Context context, String message)
+    public void createNotification(Context context, int id, String message, String subtext, String ticker, String title)
     {
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         String tickerText = "You have a new message from ::APP_TITLE::";
+        if(!ticker.isEmpty()) { tickerText = ticker; }
+
         String contentTitle = "::APP_TITLE::";
+        if(!title.isEmpty()) { contentTitle = title; }
+
+        String contentSubtext = subtext;
         String contentText = message;
         
         PackageManager pm = context.getPackageManager();

@@ -27,7 +27,7 @@ public class NotificationsExtension extends Extension {
     
     static PendingIntent pendingIntent;
     
-    public static void scheduleNotification(String message,int seconds,int repeat)
+    public static void scheduleNotification(int id, String message,int seconds,int repeat,String subtext, String ticker, String title)
     {
         setIconBadge(0);
         
@@ -35,7 +35,11 @@ public class NotificationsExtension extends Extension {
         
         SharedPreferences sharedPref= mainContext.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
         SharedPreferences.Editor editor= sharedPref.edit();
+        editor.putInt("id", id);
         editor.putString("msg", message);
+        editor.putString("subtext", subtext);
+        editor.putString("ticker", ticker);
+        editor.putString("title", title);
         editor.commit();
         
         // Define a time value of seconds

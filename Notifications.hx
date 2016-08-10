@@ -20,7 +20,7 @@ class Notifications
     private static var increaseIconBadgeNumberBy = Lib.load("notifications","increase_icon_badge_number",1);
     private static var decreaseIconBadgeNumberBy = Lib.load("notifications","decrease_icon_badge_number",1);
     private static var cancelLocalNotifications = Lib.load("notifications","cancel_local_notifications",0);
-    private static var scheduleLocalNotification = Lib.load("notifications","schedule_local_notification",3);
+    private static var scheduleLocalNotification = Lib.load("notifications","schedule_local_notification",5);
 	
     #end
 	
@@ -100,8 +100,31 @@ class Notifications
             cancelLocalNotifications();
 		#end
     }
-    
-    public static function hxScheduleLocalNotification(message:String = "none", days:Int = 0, hours:Int = 0, minutes:Int = 0, seconds:Int = 0, repeat:Int = 0):Void
+
+    /**
+    * Schedules the notification
+    * 
+    * @param    id         (Android) Unique id of the notification. Existing notifications with same id will be overwritten
+    * @param    message    Content of notification
+    * @param    days       Days until notification fires
+    * @param    hours      Hours until notification fires
+    * @param    minutes    Minutes until notification fires
+    * @param    seconds    Seconds until notification fires
+    * @param    repeat     Interval to repeat this notification
+    *                          0 = No repeat
+    *                          1 = Every minute
+    *                          2 = Every hour
+    *                          3 = Every day
+    *                          4 = Every week
+    *                          5 = Every month
+    *                          6 = Every 3 months
+    *                          7 = Every year
+    * @param    subtext    (Android)
+    * @param    ticker     (Android)
+    * @param    title      Defaults to App Name if not specified
+    * @param    action     (IOS) "Swipe to [action]" text
+    */
+    public static function hxScheduleLocalNotification(id:Int = 1, message:String = "none", days:Int = 0, hours:Int = 0, minutes:Int = 0, seconds:Int = 0, repeat:Int = 0, subtext:String = "", ticker:String = "", title:String = "", action:String = ""):Void
     {
         seconds = seconds + (minutes*60) + (hours*3600) + (days*86400);
 		
@@ -116,9 +139,14 @@ class Notifications
                 scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(Ljava/lang/String;II)V", true);
             }
             var args = new Array<Dynamic>();
+            args.push(id);
             args.push(message);
-			args.push(seconds);
-			args.push(repeat);
+            args.push(seconds);
+            args.push(repeat);
+            args.push(subtext);
+            args.push(ticker);
+            args.push(title);
+
             scheduleLocalNotification(args);
         #end
     }
