@@ -65,20 +65,45 @@ public class NCReceiver extends BroadcastReceiver {
         }
 
         long when = System.currentTimeMillis();
-            
+           
+
+// api 8
         //Intent notificationIntent = new Intent(context, Extension.mainActivity.getClass());
        // PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
         
-        PendingIntent contentIntent= PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0);
+        // PendingIntent contentIntent= PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0);
         
-        Notification notification = new Notification(iconID, tickerText, when);
-        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        // Notification notification = new Notification(iconID, tickerText, when);
+        // notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+        // notification.defaults |= Notification.DEFAULT_SOUND;
+        // notification.defaults |= Notification.DEFAULT_VIBRATE;
+        // notification.flags |= Notification.FLAG_AUTO_CANCEL;
     
-        mNotificationManager.notify(1, notification);
-        
+        // mNotificationManager.notify(1, notification);
+
+// api 11
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0);
+
+        Notification.Builder builder = new Notification.Builder(context.getApplicationContext());
+
+        builder.setAutoCancel(true);
+        builder.setContentTitle(contentTitle);               
+        builder.setContentText(contentText);
+        builder.setSmallIcon(iconID);
+        builder.setContentIntent(pendingIntent);
+        builder.setOngoing(false);
+        builder.setTicker(tickerText);
+        builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
+        if(!contentSubtext.isEmpty()) {
+            builder.setSubText(contentSubtext);   //API level 16
+        }
+        builder.build();
+
+        Notification notification = builder.getNotification();
+        mNotificationManager.notify(id, notification);
+
+
         //set badge number
         
         SharedPreferences sharedPref= context.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
