@@ -115,7 +115,7 @@ public class NCReceiver extends BroadcastReceiver {
         editor.putInt("badge",badgeCount);
         editor.commit();
         
-        ShortcutBadger.with(context.getApplicationContext()).count(badgeCount);
+        ShortcutBadger.applyCount(context.getApplicationContext(), badgeCount);
 
     }
     

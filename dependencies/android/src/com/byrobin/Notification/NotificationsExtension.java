@@ -129,7 +129,7 @@ public class NotificationsExtension extends Extension {
         editor.putInt("badge", badgeCount);
         editor.commit();
         
-        ShortcutBadger.with(mainContext.getApplicationContext()).count(badgeCount);
+        ShortcutBadger.applyCount(mainContext.getApplicationContext(), badgeCount);
     }
     
     public static void increaseIconBadge(int number)
@@ -139,7 +139,7 @@ public class NotificationsExtension extends Extension {
         
         
         int increaseBadgeCount = badgeCount + number;
-        ShortcutBadger.with(mainContext.getApplicationContext()).count(increaseBadgeCount);
+        ShortcutBadger.applyCount(mainContext.getApplicationContext(), increaseBadgeCount);
         
         SharedPreferences.Editor editor= sharedPref.edit();
         editor.putInt("badge", increaseBadgeCount);
@@ -153,7 +153,7 @@ public class NotificationsExtension extends Extension {
         int badgeCount = sharedPref.getInt("badge", 0);
         
         int decreaseBadgeCount = badgeCount -+ number;
-        ShortcutBadger.with(mainContext.getApplicationContext()).count(decreaseBadgeCount);
+        ShortcutBadger.applyCount(mainContext.getApplicationContext(), decreaseBadgeCount);
         
         SharedPreferences.Editor editor= sharedPref.edit();
         editor.putInt("badge",decreaseBadgeCount);
