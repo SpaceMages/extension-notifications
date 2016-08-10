@@ -27,7 +27,7 @@ public class NotificationsExtension extends Extension {
     
     static PendingIntent pendingIntent;
     
-    public static void scheduleNotification(int id, String message,int seconds,int repeat,String subtext, String ticker, String title)
+    public static void scheduleNotification(int id, String message,long seconds,int repeat,String subtext, String ticker, String title)
     {
         setIconBadge(0);
         

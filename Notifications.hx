@@ -136,7 +136,7 @@ class Notifications
 
             if(scheduleLocalNotification == null)
             {
-                scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(ILjava/lang/String;IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", true);
+                scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(ILjava/lang/String;JILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", true);
             }
             var args = new Array<Dynamic>();
             args.push(id);
