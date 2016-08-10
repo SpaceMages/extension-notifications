@@ -21,7 +21,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 public class NotificationsExtension extends Extension {
     
     public static int repeatInt;
-    public static int seconds;
+    public static long seconds;
     
     public static final String MY_ACTION = "com.byrobin.Notification.myaction";
     
@@ -72,7 +72,7 @@ public class NotificationsExtension extends Extension {
         }
     }
     
-    private static int getInterval(){
+    private static Long getInterval(){
         
         if(repeatInt == 1){// minute
             
@@ -105,7 +105,7 @@ public class NotificationsExtension extends Extension {
         }
         
      int milliseconds = 1000;
-     int repeatMS = seconds * 1 * milliseconds;
+     long repeatMS = seconds * 1 * milliseconds;
      return repeatMS;
      }
     
