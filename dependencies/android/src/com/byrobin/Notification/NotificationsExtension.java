@@ -57,7 +57,7 @@ public class NotificationsExtension extends Extension {
         // Trigger for alertIntent to fire in seconds
         // FLAG_UPDATE_CURRENT : Update the Intent if active
         
-        pendingIntent = PendingIntent.getBroadcast(mainActivity, 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(mainActivity, id, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         
         
         if(repeatInt == 0){
