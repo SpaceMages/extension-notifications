@@ -127,12 +127,12 @@ class Notifications
     public static function hxScheduleLocalNotification(id:Int = 1, message:String = "none", days:Int = 0, hours:Int = 0, minutes:Int = 0, seconds:Int = 0, repeat:Int = 0, subtext:String = "", ticker:String = "", title:String = "", action:String = ""):Void
     {
         seconds = seconds + (minutes*60) + (hours*3600) + (days*86400);
-		
-		#if ios
-        scheduleLocalNotification(message, seconds, repeat);
-		#end
-		
-		#if android
+        
+        #if ios
+        scheduleLocalNotification(message, seconds, repeat, title, action);
+        #end
+        
+        #if android
 
             if(scheduleLocalNotification == null)
             {

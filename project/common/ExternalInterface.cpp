@@ -47,11 +47,11 @@ void cancel_local_notifications()
 }
 DEFINE_PRIM(cancel_local_notifications, 0);
 
-void schedule_local_notification(value message, value time, value repeat)
+void schedule_local_notification(value message, value time, value repeat, value title, value action)
 {
-    scheduleLocalN(val_string(message), val_int(time), val_int(repeat));
+    scheduleLocalN(val_string(message), val_int(time), val_int(repeat), val_string(title), val_string(action));
 }
-DEFINE_PRIM(schedule_local_notification, 3);
+DEFINE_PRIM(schedule_local_notification, 5);
 
 #endif
 

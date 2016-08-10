@@ -83,7 +83,7 @@ extern "C" void nme_app_set_active(bool inActive);
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
-- (void) scheduleLocalNotificationWithBody:(NSString*)body withTimeIntervalSinceNow:(int)timeInterval withRepeatTime:(int)repeatTime
+- (void) scheduleLocalNotificationWithBody:(NSString*)body withTimeIntervalSinceNow:(int)timeInterval withRepeatTime:(int)repeatTime withTitle:(NSString*)title withAction:(NSString*)action
 {
 
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
@@ -139,6 +139,8 @@ extern "C" void nme_app_set_active(bool inActive);
     
 
     notification.alertBody = body;
+    if( [title length] != 0 )  notification.alertTitle = title;
+    if( [action length] != 0 ) notification.alertAction = action;
 
     NSInteger badgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber;
     badgeNumber += 1;
@@ -195,15 +197,19 @@ namespace notifications
         [notificationController cancelLocalNotifications];
     }
     
-    void scheduleLocalN(const char* message, int time, int repeat)
+    void scheduleLocalN(const char* message, int time, int repeat, const char* title, const char* action)
     {
         if(notificationController == NULL)
         {
             NotificationController* nc = [[NotificationController alloc] init];
             notificationController = nc;
         }
+
         NSString* newMessage = [[NSString alloc] initWithUTF8String: message];
-        [notificationController scheduleLocalNotificationWithBody:newMessage withTimeIntervalSinceNow:time withRepeatTime:repeat];
+        NSString* newTitle   = [[NSString alloc] initWithUTF8String: title];
+        NSString* newAction  = [[NSString alloc] initWithUTF8String: action];
+
+        [notificationController scheduleLocalNotificationWithBody:newMessage withTimeIntervalSinceNow:time withRepeatTime:repeat withTitle:newTitle withAction:newAction];
     }
     
 }
