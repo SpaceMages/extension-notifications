@@ -1,6 +1,7 @@
 package com.byrobin.Notification;
 
 import android.app.Activity;
+import android.support.v4.app.NotificationCompat;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -86,7 +87,7 @@ public class NCReceiver extends BroadcastReceiver {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), id, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification.Builder builder = new Notification.Builder(context.getApplicationContext());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext());
 
         builder.setAutoCancel(true);
         builder.setContentTitle(contentTitle);               
@@ -96,7 +97,7 @@ public class NCReceiver extends BroadcastReceiver {
         builder.setOngoing(false);
         builder.setWhen(when);
         builder.setTicker(tickerText);
-        builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
+        builder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS);
         if(!contentSubtext.isEmpty()) {
             builder.setSubText(contentSubtext);   //API level 16
         }
