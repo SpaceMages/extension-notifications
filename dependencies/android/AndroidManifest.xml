@@ -25,7 +25,15 @@
          
          <receiver android:name="com.byrobin.Notification.NCReceiver" android:exported="true" android:enabled="true">
              <intent-filter>
-                 <action android:name="com.byrobin.Notification.myaction"/>
+                 <action android:name="::APP_PACKAGE::.Notification"/>
+                 <action android:name="::APP_PACKAGE::.Notification1"/>
+                 <action android:name="::APP_PACKAGE::.Notification2"/>
+                 <action android:name="::APP_PACKAGE::.Notification3"/>
+                 <action android:name="::APP_PACKAGE::.Notification4"/>
+                 <action android:name="::APP_PACKAGE::.Notification5"/>
+                 <action android:name="::APP_PACKAGE::.Notification6"/>
+                 <action android:name="::APP_PACKAGE::.Notification7"/>
+                 <action android:name="::APP_PACKAGE::.Notification8"/>
              </intent-filter>
          </receiver>
          

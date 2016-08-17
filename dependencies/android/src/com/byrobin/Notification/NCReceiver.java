@@ -29,8 +29,9 @@ public class NCReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context arg0, Intent arg1)
     {
-        
-        SharedPreferences sharedPref= arg0.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
+
+        SharedPreferences sharedPref= arg0.getSharedPreferences(arg1.getAction() ,Context.MODE_WORLD_READABLE);
+        //SharedPreferences sharedPref= arg0.getSharedPreferences("com.byrobin.Notification" ,Context.MODE_WORLD_READABLE);
         int    id       = sharedPref.getInt("id", 1);
         String msg      = sharedPref.getString("msg", "");
         String subtext  = sharedPref.getString("subtext", "");
@@ -83,7 +84,7 @@ public class NCReceiver extends BroadcastReceiver {
 
 // api 11
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), id, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(context.getApplicationContext());
 

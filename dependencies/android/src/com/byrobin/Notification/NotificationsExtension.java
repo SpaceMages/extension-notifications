@@ -23,7 +23,7 @@ public class NotificationsExtension extends Extension {
     public static long repeatLong;
     public static long seconds;
     
-    public static final String MY_ACTION = "com.byrobin.Notification.myaction";
+    public static final String MY_ACTION = "::APP_PACKAGE::.Notification";
     
     static PendingIntent pendingIntent;
     
@@ -33,7 +33,7 @@ public class NotificationsExtension extends Extension {
         
         repeatLong = repeat;
         
-        SharedPreferences sharedPref= mainContext.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
+        SharedPreferences sharedPref= mainContext.getSharedPreferences("::APP_PACKAGE::.Notification" + id,Context.MODE_WORLD_READABLE);
         SharedPreferences.Editor editor= sharedPref.edit();
         editor.putInt("id", id);
         editor.putString("msg", message);
@@ -47,7 +47,7 @@ public class NotificationsExtension extends Extension {
         
         // Define our intention of executing Receiver
         //Intent alertIntent = new Intent(mainActivity, NCReceiver.class);
-        Intent alertIntent = new Intent(MY_ACTION);
+        Intent alertIntent = new Intent(MY_ACTION + id);
         
         // Allows you to schedule for your application to do something at a later date
         // even if it is in he background or isn't active
