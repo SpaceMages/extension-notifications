@@ -20,18 +20,18 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class NotificationsExtension extends Extension {
     
-    public static int repeatInt;
+    public static long repeatLong;
     public static long seconds;
     
     public static final String MY_ACTION = "com.byrobin.Notification.myaction";
     
     static PendingIntent pendingIntent;
     
-    public static void scheduleNotification(int id, String message,long seconds,int repeat,String subtext, String ticker, String title)
+    public static void scheduleNotification(int id, String message,long seconds,long repeat,String subtext, String ticker, String title)
     {
         setIconBadge(0);
         
-        repeatInt = repeat;
+        repeatLong = repeat;
         
         SharedPreferences sharedPref= mainContext.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
         SharedPreferences.Editor editor= sharedPref.edit();
@@ -60,8 +60,7 @@ public class NotificationsExtension extends Extension {
         pendingIntent = PendingIntent.getBroadcast(mainActivity, id, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         
         
-        if(repeatInt == 0){
-            
+        if(repeatLong == 0){
             alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);;
             
         }else{
@@ -74,38 +73,38 @@ public class NotificationsExtension extends Extension {
     
     private static Long getInterval(){
         
-        if(repeatInt == 1){// minute
+        // if(repeatLong == 1){// minute
             
-            seconds = 60;
+        //     seconds = 60;
             
-        }else if(repeatInt == 2){// hour
+        // }else if(repeatLong == 2){// hour
             
-            seconds = 60 * 60;
+        //     seconds = 60 * 60;
             
-        }else if(repeatInt == 3){// day
+        // }else if(repeatLong == 3){// day
             
-            seconds = 60 * 60 * 24;
+        //     seconds = 60 * 60 * 24;
             
-        }else if(repeatInt == 4){// week
+        // }else if(repeatLong == 4){// week
             
-            seconds = 60 * 60 * 24 * 7;
+        //     seconds = 60 * 60 * 24 * 7;
             
-        }else if(repeatInt == 5){// month
+        // }else if(repeatLong == 5){// month
             
-            seconds = 60 * 60 * 24 * 7 * 4;
+        //     seconds = 60 * 60 * 24 * 7 * 4;
             
-        }else if(repeatInt == 6){//3 months
+        // }else if(repeatLong == 6){//3 months
             
-            seconds = 60 * 60 * 24 * 7 * 4 * 3;
+        //     seconds = 60 * 60 * 24 * 7 * 4 * 3;
             
-        }else if(repeatInt == 7){// year
+        // }else if(repeatLong == 7){// year
             
-            seconds = 60 * 60 * 24 * 7 * 4 * 12;
+        //     seconds = 60 * 60 * 24 * 7 * 4 * 12;
             
-        }
+        // }
         
      int milliseconds = 1000;
-     long repeatMS = seconds * 1 * milliseconds;
+     long repeatMS = repeatLong * 1 * milliseconds;
      return repeatMS;
      }
     

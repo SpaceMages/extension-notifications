@@ -100,43 +100,22 @@ extern "C" void nme_app_set_active(bool inActive);
     notification.timeZone = [NSTimeZone defaultTimeZone];
         
         
-       /* NSYearCalendarUnit = event will repeat once in a year at the same month, day and hour
-        NSMonthCalendarUnit = event will repeat once a month at the same day and hour
-        NSDayCalendarUnit = event will repeat every day at the same hour
-        NSHourCalendarUnit = event will repeat every hour at the same minute
-        NSMinuteCalendarUnit = event will repeat every minute at the same second
-        NSSecondCalendarUnit = event will repeat every second
-        NSWeekCalendarUnit = event will repeat the same day of week every week
-        NSWeekdayCalendarUnit = ?????? can I make it repeat just specific days? I mean, monday to friday but not saturday and sunday?
-        NSWeekdayOrdinalCalendarUnit = ????? how do I use that?
-        NSQuarterCalendarUnit = when exactly will it repeat? every 3 months?*/
-        
-        if (repeatTime == 1)
-        {
-            notification.repeatInterval = NSMinuteCalendarUnit;
-        }else if (repeatTime == 2)
-        {
-            notification.repeatInterval = NSHourCalendarUnit;
-        }else if (repeatTime == 3)
-        {
-            notification.repeatInterval = NSDayCalendarUnit;
-        }else if (repeatTime == 4)
-        {
-            notification.repeatInterval = NSWeekCalendarUnit;
-        }else if (repeatTime == 5)
-        {
-            notification.repeatInterval = NSMonthCalendarUnit;
-        }else if (repeatTime == 6)
-        {
-            notification.repeatInterval = NSQuarterCalendarUnit;
-        }else if (repeatTime == 7)
-        {
-            notification.repeatInterval = NSYearCalendarUnit;
-        }else
-        {
-            notification.repeatInterval = nil;
-        }
+   /* NSYearCalendarUnit = event will repeat once in a year at the same month, day and hour
+    NSMonthCalendarUnit = event will repeat once a month at the same day and hour
+    NSDayCalendarUnit = event will repeat every day at the same hour
+    NSHourCalendarUnit = event will repeat every hour at the same minute
+    NSMinuteCalendarUnit = event will repeat every minute at the same second
+    NSSecondCalendarUnit = event will repeat every second
+    NSWeekCalendarUnit = event will repeat the same day of week every week
+    NSWeekdayCalendarUnit = ?????? can I make it repeat just specific days? I mean, monday to friday but not saturday and sunday?
+    NSWeekdayOrdinalCalendarUnit = ????? how do I use that?
+    NSQuarterCalendarUnit = when exactly will it repeat? every 3 months?*/
     
+    if (repeatTime > 0) {
+        notification.repeatInterval = NSSecondCalendarUnit * repeatTime;
+    } else {
+        notification.repeatInterval = nil;
+    }
 
     notification.alertBody = body;
     if ([notification respondsToSelector:@selector(alertTitle)]) {
