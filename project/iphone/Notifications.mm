@@ -139,7 +139,9 @@ extern "C" void nme_app_set_active(bool inActive);
     
 
     notification.alertBody = body;
-    if( [title length] != 0 )  notification.alertTitle = title;
+    if ([notification respondsToSelector:@selector(alertTitle)]) {
+        if( [title length] != 0 )  notification.alertTitle = title;
+    }
     if( [action length] != 0 ) notification.alertAction = action;
 
     NSInteger badgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber;
