@@ -93,6 +93,7 @@ public class NCReceiver extends BroadcastReceiver {
         builder.setSmallIcon(iconID);
         builder.setContentIntent(pendingIntent);
         builder.setOngoing(false);
+        builder.setWhen(when);
         builder.setTicker(tickerText);
         builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
         if(!contentSubtext.isEmpty()) {
