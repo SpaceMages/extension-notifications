@@ -19,7 +19,7 @@ import org.haxe.extension.Extension;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 import android.view.Window;
-
+import android.util.Log;
 
 public class NCReceiver extends BroadcastReceiver {
     
@@ -39,10 +39,10 @@ public class NCReceiver extends BroadcastReceiver {
         String ticker   = sharedPref.getString("ticker", "");
         String title    = sharedPref.getString("title", "");
 
-        createNotification(arg0, id, msg, subtext, ticker, title);
+        createNotification(arg0, arg1, id, msg, subtext, ticker, title);
     }
 
-    public void createNotification(Context context, int id, String message, String subtext, String ticker, String title)
+    public void createNotification(Context context, Intent intent, int id, String message, String subtext, String ticker, String title)
     {
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -85,7 +85,27 @@ public class NCReceiver extends BroadcastReceiver {
 
 // api 11
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), id, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        // Launch or open application on notification tap
+        Intent notificationIntent = null;
+        try {
+            PackageManager pm = context.getPackageManager();
+            if(pm != null) {
+                String packageName = context.getPackageName();
+                notificationIntent = pm.getLaunchIntentForPackage(packageName);
+                notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER); // Should already be set, but just in case
+            }
+        } catch (Exception e) {
+            Log.w("Notification Scheduler", "Failed to get application launch notificationIntent");
+            Log.w("Notification Scheduler", e.getMessage());
+        }
+        
+        if(notificationIntent == null) {
+            Log.i("Notification Scheduler", "Falling back to empty notificationIntent");
+            notificationIntent = new Intent();
+        }
+
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext());
 
@@ -109,7 +129,7 @@ public class NCReceiver extends BroadcastReceiver {
 
         //set badge number
         
-        SharedPreferences sharedPref= context.getSharedPreferences("com.byrobin.Notification",Context.MODE_WORLD_READABLE);
+        SharedPreferences sharedPref= context.getSharedPreferences(intent.getAction(),Context.MODE_WORLD_READABLE);
         int badgeCount = sharedPref.getInt("badge", 0);
         
         badgeCount++;
