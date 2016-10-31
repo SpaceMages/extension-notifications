@@ -12,7 +12,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
-
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.*;
 
 import org.haxe.extension.Extension;
 
@@ -23,7 +26,7 @@ import android.util.Log;
 
 public class NCReceiver extends BroadcastReceiver {
     
-    public int iconID;
+    public Bitmap bm;
     public PendingIntent contentIntent;
     
     // Called when a broadcast is made targeting this class
@@ -33,16 +36,52 @@ public class NCReceiver extends BroadcastReceiver {
 
         SharedPreferences sharedPref= arg0.getSharedPreferences(arg1.getAction() ,Context.MODE_WORLD_READABLE);
         //SharedPreferences sharedPref= arg0.getSharedPreferences("com.byrobin.Notification" ,Context.MODE_WORLD_READABLE);
-        int    id       = sharedPref.getInt("id", 1);
-        String msg      = sharedPref.getString("msg", "");
-        String subtext  = sharedPref.getString("subtext", "");
-        String ticker   = sharedPref.getString("ticker", "");
-        String title    = sharedPref.getString("title", "");
+        int    id           = sharedPref.getInt("id", 1);
+        String msg          = sharedPref.getString("msg", "");
+        String subtext      = sharedPref.getString("subtext", "");
+        String ticker       = sharedPref.getString("ticker", "");
+        String title        = sharedPref.getString("title", "");
+        String bigIcon      = sharedPref.getString("bigIcon", "");
+        String whiteIcon    = sharedPref.getString("whiteIcon", "");
+        String bgColor      = sharedPref.getString("bgColor", "");
 
-        createNotification(arg0, arg1, id, msg, subtext, ticker, title);
+        createNotification(arg0, arg1, id, msg, subtext, ticker, title, bigIcon, whiteIcon, bgColor);
     }
 
-    public void createNotification(Context context, Intent intent, int id, String message, String subtext, String ticker, String title)
+    private int getNotificationIcon(Context context, String whiteIcon) {
+
+        String pkg = "::APP_PACKAGE::";
+        PackageManager pm = context.getPackageManager();
+        int iconID = -1;
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= 21); // 21 == android.os.Build.VERSION_CODES.LOLLIPOP
+
+        if(useWhiteIcon){
+
+            try {
+                if(whiteIcon != "") {
+                    iconID = context.getResources().getIdentifier(whiteIcon , "drawable", context.getPackageName());    
+                }
+            } catch (Exception e) {
+
+            }
+
+        } else {
+
+            try {
+                ApplicationInfo ai = pm.getApplicationInfo(pkg, 0);
+                iconID = ai.icon;
+            } catch (Exception e) {
+
+            }
+
+        }
+
+        if(iconID == -1) iconID = android.R.drawable.ic_dialog_info;
+
+        return iconID;
+    }
+
+    public void createNotification(Context context, Intent intent, int id, String message, String subtext, String ticker, String title, String bigIcon, String whiteIcon, String bgColor)
     {
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -56,16 +95,18 @@ public class NCReceiver extends BroadcastReceiver {
         String contentSubtext = subtext;
         String contentText = message;
         
-        PackageManager pm = context.getPackageManager();
-        String pkg = "::APP_PACKAGE::";
-        
-        try {
-            ApplicationInfo ai = pm.getApplicationInfo(pkg, 0);
-            iconID = ai.icon;
-        } catch (NameNotFoundException e) {
-            iconID = android.R.drawable.ic_dialog_info;
-        }
+        Extension.assetManager = context.getAssets();
 
+        if(bigIcon != "") {
+            try {
+                bm = BitmapFactory.decodeStream(Extension.assetManager.open(bigIcon));
+            } catch (Exception e) {
+                Log.w("Resource list", "Bitmap Exception happened");
+                Log.w("Resource list", e.getMessage());
+                bm = BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info);
+            }
+        }
+        
         long when = System.currentTimeMillis();
            
 
@@ -112,7 +153,14 @@ public class NCReceiver extends BroadcastReceiver {
         builder.setAutoCancel(true);
         builder.setContentTitle(contentTitle);               
         builder.setContentText(contentText);
-        builder.setSmallIcon(iconID);
+        builder.setSmallIcon(getNotificationIcon(context, whiteIcon));
+        if(bm != null) {
+            builder.setLargeIcon(bm);
+        }
+        // 21/23 and up
+        if(bgColor != "") {
+            builder.setColor( Color.parseColor(bgColor) );
+        }
         builder.setContentIntent(pendingIntent);
         builder.setOngoing(false);
         builder.setWhen(when);

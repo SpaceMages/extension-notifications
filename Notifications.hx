@@ -122,9 +122,12 @@ class Notifications
     * @param    subtext    (Android)
     * @param    ticker     (Android)
     * @param    title      Defaults to App Name if not specified
+    * @param    bigIcon    (Android) Asset path to a valid png for a big icon - e.g. "assets/images/icons/cat_hearts.png"
+    * @param    whiteIcon  (Android) Application icon in resources that should be displayed - must be white, with transparent background. E.g. "cat"
+    * @param    bgColor    (Android) Background color to display behind whiteIcon on Android devices, e.g. "#FE9672"
     * @param    action     (IOS) "Swipe to [action]" text
     */
-    public static function hxScheduleLocalNotification(id:Int = 1, message:String = "none", seconds:Int = 0, repeatSeconds:Int = 0, subtext:String = "", ticker:String = "", title:String = "", action:String = ""):Void
+    public static function hxScheduleLocalNotification(id:Int = 1, message:String = "none", seconds:Int = 0, repeatSeconds:Int = 0, subtext:String = "", ticker:String = "", title:String = "", bigIcon:String="", whiteIcon:String="", bgColor:String="", action:String = ""):Void
     {
         // seconds = seconds + (minutes*60) + (hours*3600) + (days*86400);
         
@@ -136,7 +139,7 @@ class Notifications
 
             if(scheduleLocalNotification == null)
             {
-                scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(ILjava/lang/String;JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", true);
+                scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(ILjava/lang/String;JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", true);
             }
             var args = new Array<Dynamic>();
             args.push(id);
@@ -146,6 +149,9 @@ class Notifications
             args.push(subtext);
             args.push(ticker);
             args.push(title);
+            args.push(bigIcon);
+            args.push(whiteIcon);
+            args.push(bgColor);
 
             scheduleLocalNotification(args);
         #end
