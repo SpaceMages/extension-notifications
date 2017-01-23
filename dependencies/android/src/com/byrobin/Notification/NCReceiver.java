@@ -44,8 +44,11 @@ public class NCReceiver extends BroadcastReceiver {
         String bigIcon      = sharedPref.getString("bigIcon", "");
         String whiteIcon    = sharedPref.getString("whiteIcon", "");
         String bgColor      = sharedPref.getString("bgColor", "");
+        boolean soundOff    = sharedPref.getBoolean("soundOff", false);
+        boolean vibrateOff  = sharedPref.getBoolean("vibrateOff", false);
+        boolean lightsOff   = sharedPref.getBoolean("lightsOff", false);
 
-        createNotification(arg0, arg1, id, msg, subtext, ticker, title, bigIcon, whiteIcon, bgColor);
+        createNotification(arg0, arg1, id, msg, subtext, ticker, title, bigIcon, whiteIcon, bgColor, soundOff, vibrateOff, lightsOff);
     }
 
     private int getNotificationIcon(Context context, String whiteIcon) {
@@ -81,7 +84,7 @@ public class NCReceiver extends BroadcastReceiver {
         return iconID;
     }
 
-    public void createNotification(Context context, Intent intent, int id, String message, String subtext, String ticker, String title, String bigIcon, String whiteIcon, String bgColor)
+    public void createNotification(Context context, Intent intent, int id, String message, String subtext, String ticker, String title, String bigIcon, String whiteIcon, String bgColor, boolean soundOff, boolean vibrateOff, boolean lightsOff)
     {
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -165,7 +168,13 @@ public class NCReceiver extends BroadcastReceiver {
         builder.setOngoing(false);
         builder.setWhen(when);
         builder.setTicker(tickerText);
-        builder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS);
+
+        int defaultSettings = 0;
+        if(!soundOff)   defaultSettings += NotificationCompat.DEFAULT_SOUND;
+        if(!vibrateOff) defaultSettings += NotificationCompat.DEFAULT_VIBRATE;
+        if(!lightsOff)  defaultSettings += NotificationCompat.DEFAULT_LIGHTS;
+        builder.setDefaults( defaultSettings );
+
         if(!contentSubtext.isEmpty()) {
             builder.setSubText(contentSubtext);   //API level 16
         }

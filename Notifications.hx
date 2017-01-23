@@ -127,7 +127,7 @@ class Notifications
     * @param    bgColor    (Android) Background color to display behind whiteIcon on Android devices, e.g. "#FE9672"
     * @param    action     (IOS) "Swipe to [action]" text
     */
-    public static function hxScheduleLocalNotification(id:Int = 1, message:String = "none", seconds:Int = 0, repeatSeconds:Int = 0, subtext:String = "", ticker:String = "", title:String = "", bigIcon:String="", whiteIcon:String="", bgColor:String="", action:String = ""):Void
+    public static function hxScheduleLocalNotification(id:Int = 1, message:String = "none", seconds:Int = 0, repeatSeconds:Int = 0, subtext:String = "", ticker:String = "", title:String = "", bigIcon:String="", whiteIcon:String="", bgColor:String="", action:String = "", ?soundOff:Bool = false, ?vibrateOff:Bool = false, ?lightsOff:Bool = false):Void
     {
         // seconds = seconds + (minutes*60) + (hours*3600) + (days*86400);
         
@@ -139,7 +139,7 @@ class Notifications
 
             if(scheduleLocalNotification == null)
             {
-                scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(ILjava/lang/String;JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", true);
+                scheduleLocalNotification = JNI.createStaticMethod("com.byrobin.Notification.NotificationsExtension", "scheduleNotification", "(ILjava/lang/String;JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZ)V", true);
             }
             var args = new Array<Dynamic>();
             args.push(id);
@@ -152,6 +152,9 @@ class Notifications
             args.push(bigIcon);
             args.push(whiteIcon);
             args.push(bgColor);
+            args.push(soundOff);
+            args.push(vibrateOff);
+            args.push(lightsOff);
 
             scheduleLocalNotification(args);
         #end

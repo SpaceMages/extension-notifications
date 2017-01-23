@@ -27,7 +27,7 @@ public class NotificationsExtension extends Extension {
     
     static PendingIntent pendingIntent;
     
-    public static void scheduleNotification(int id, String message,long seconds,long repeat,String subtext, String ticker, String title, String bigIcon, String whiteIcon, String bgColor)
+    public static void scheduleNotification(int id, String message,long seconds,long repeat,String subtext, String ticker, String title, String bigIcon, String whiteIcon, String bgColor, boolean soundOff, boolean vibrateOff, boolean lightsOff)
     {
         setIconBadge(0);
         
@@ -43,6 +43,9 @@ public class NotificationsExtension extends Extension {
         editor.putString("bigIcon", bigIcon);
         editor.putString("whiteIcon", whiteIcon);
         editor.putString("bgColor", bgColor);
+        editor.putBoolean("soundOff", soundOff);
+        editor.putBoolean("vibrateOff", vibrateOff);
+        editor.putBoolean("lightsOff", lightsOff);
         editor.commit();
         
         // Define a time value of seconds
