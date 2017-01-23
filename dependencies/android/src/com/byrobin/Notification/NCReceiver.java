@@ -68,7 +68,10 @@ public class NCReceiver extends BroadcastReceiver {
 
             }
 
-        } else {
+        } 
+
+        // no white icon found or sdk lower
+        if(iconID == -1) {
 
             try {
                 ApplicationInfo ai = pm.getApplicationInfo(pkg, 0);
@@ -79,6 +82,7 @@ public class NCReceiver extends BroadcastReceiver {
 
         }
 
+        // no application icon nor white icon found, fall back to "info" icon
         if(iconID == -1) iconID = android.R.drawable.ic_dialog_info;
 
         return iconID;
@@ -106,8 +110,20 @@ public class NCReceiver extends BroadcastReceiver {
             } catch (Exception e) {
                 Log.w("Resource list", "Bitmap Exception happened");
                 Log.w("Resource list", e.getMessage());
-                bm = BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info);
             }
+
+            // try with app icon instead
+            if(bm == null) {
+                try {
+                    bm = BitmapFactory.decodeResource( context.getResources(), context.getResources().getIdentifier("icon" , "drawable", context.getPackageName()) );   
+                } catch (Exception e) {
+                    Log.w("Resource list", "Bitmap Exception happened");
+                    Log.w("Resource list", e.getMessage());
+                }
+            }
+
+            // fallback to info icon
+            if(bm == null) bm = BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info);
         }
         
         long when = System.currentTimeMillis();
