@@ -14,13 +14,28 @@
     
     <!--Badge permission for sony-->
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
-    
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
+
     <!--Badge permission for apex-->
     <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
     
     <!--Badge permission for solid-->
     <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
-    
+
+    <!--for huawei-->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
+
+    <!--for ZUK-->
+    <uses-permission android:name="android.permission.READ_APP_BADGE"/>
+
+    <!--for OPPO-->
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
+
+
+
      <application>
          
          <receiver android:name="com.byrobin.Notification.NCReceiver" android:exported="true" android:enabled="true">
